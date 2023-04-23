@@ -52,37 +52,39 @@ setopt prompt_subst   # プロンプトの文字列を変えられる
 
 function _create_item() {
     if [[ $1 == "litem" ]] then
-        echo "%F{$2}%K{$3} %k%f%K{$3}%F{$4}$5%f%k"
+        echo "%F{$2}%K{$3}%k%f%K{$3}%F{$4}$5%f%k"
     elif [[ $1 == "litem_left" ]] then
-        echo "%F{$2}%K{$3} %k%f%K{$3}%F{$4}$5%f%k"
+        echo "%F{$2}%K{$3}%k%f%K{$3}%F{$4}$5%f%k"
     elif [[ $1 == "litem_right" ]] then
-        echo "%F{$2}%K{$3} %k%f%K{$3}%F{$4}$5%f%k%F{$3}%f"
+        echo "%F{$2}%K{$3}%k%f%K{$3}%F{$4}$5%f%k%F{$3}%f"
     elif [[ $1 == "ritem" ]] then
-        echo "%F{$2}%K{$3}%f%k%K{$2}%F{$4}$5%1v%f%k%F{$2}%K{$3}%f%k"
+        echo "%F{$2}%K{$3}%f%k%K{$2}%F{$4}$5%1v%f%k%F{$2}%K{$3}%f%k"
     fi
 }
 
 function _get_machine_icon() {
-    ls -a /.dockerenv
+    /bin/ls -a /.dockerenv 2>&1 >/dev/null
     if [ $? = 0 ]
     then
-        echo "docker"
-    fi
+        echo -n "docker"
+    else
     typeset -A search_name
     search_name=("ubuntu"  "mac" )
-    for os in ${(k)search_name} do
-        neofetch distro | grep -Hi "$os" > /dev/null 2>&1
+    for os in ${(k)search_name}
+    do
+        neofetch distro | grep -Hi "$os" >/dev/null 2>&1
         if [ $? = 0 ]
         then
             echo "$search_name[$os]"
         fi
     done
+    fi
 }
 autoload -Uz add-zsh-hook initialize_prompt get_machine_icon
 function _initialize_prompt() {
     MACHINE_ICON=`_get_machine_icon`
     machine_prompt=`_create_item litem_left 016 008 255 $MACHINE_ICON`
-    name_prompt=`_create_item litem 008 003 255 8ucchiman`
+    name_prompt=`_create_item litem 008 003 255 $USER`
 }
 _initialize_prompt
 
@@ -94,9 +96,9 @@ function _lprompt() {
     #fi
 
     path_prompt=`echo "$PWD" | awk -v home_dir=$HOME '{sub(home_dir, " ", $0); print $0}'`
-    pwd_prompt=`create_item litem_right 003 012 255 $path_prompt"  "`
+    pwd_prompt=`_create_item litem_right 003 012 255 $path_prompt"  "`
 
-    #pwd_prompt=`create_item litem_right 003 012 255 " "%~`
+    #pwd_prompt=`_create_item litem_right 003 012 255 " "%~`
     echo $machine_prompt$name_prompt$pwd_prompt
 }
 
@@ -126,13 +128,13 @@ function _rprompt() {
     if [[ $git_check -eq 0 ]] then
         st=`git status 2> /dev/null`
         if [[ -n `echo "$st" | grep "^nothing to"` ]] then
-            git_prompt="`create_item ritem 014 016 255 $branch" "`"
+            git_prompt="`_create_item ritem 014 016 255 $branch" "`"
             git_prompt=" %1(v|$git_prompt|)"
         elif [[ -n `echo "$st" | grep "^nothing added"` ]] then
-            git_prompt="`create_item ritem 003 016 255 $branch" "`"
+            git_prompt="`_create_item ritem 003 016 255 $branch" "`"
             git_prompt=" %1(v|$git_prompt|)"
         else [[ -n `echo "$st" | grep "^# Untracked"` ]]
-            git_prompt="`create_item ritem 001 016 255 $branch" "`"
+            git_prompt="`_create_item ritem 001 016 255 $branch" "`"
             git_prompt=" %1(v|$git_prompt|)"
         fi
     else
@@ -155,7 +157,7 @@ precmd () {
 #---------------#
 #     alias     #
 #---------------#
-alias ls='exa --icons 2>/dev/null'
+alias ls='ls --color'
 alias diff='diff --color'
 alias drive='skicka'
 #alias go8u='rsync -auvz --exclude {'.git','.gitignore'} /mnt/c/Users/yk.iwabuchi/git/dotfiles voyager:git/; rsync -auvz --exclude {'.git','.gitignore'} /mnt/c/Users/yk.iwabuchi/git/dotfiles voyager:git/;'
