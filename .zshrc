@@ -64,14 +64,16 @@ function _create_item() {
 
 function _get_machine_icon() {
     ls -a /.dockerenv
-    if [ $? = 0 ] then
-        echo docker
+    if [ $? = 0 ]
+    then
+        echo "docker"
     fi
     typeset -A search_name
     search_name=("ubuntu"  "mac" )
     for os in ${(k)search_name} do
         neofetch distro | grep -Hi "$os" > /dev/null 2>&1
-        if [ $? = 0 ] then
+        if [ $? = 0 ]
+        then
             echo "$search_name[$os]"
         fi
     done
