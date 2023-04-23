@@ -8,6 +8,20 @@ if [[ -d $HOME/.config/zsh ]] then
     source $HOME/.config/zsh/local.zshrc
 fi
 
+function colorlist() {
+    for color in {000..015}; do
+        print -nP "%F{$color}$color %f"
+    done
+    printf "\n"
+    for color in {016..255}; do
+        print -nP "%F{$color}$color %f"
+        if [ $(($((color-16))%6)) -eq 5 ]; then
+            printf "\n"
+        fi
+    done
+}
+
+
 #---------------#
 #  completion   #
 #---------------#
@@ -96,7 +110,7 @@ function _lprompt() {
     #fi
 
     path_prompt=`echo "$PWD" | awk -v home_dir=$HOME '{sub(home_dir, " ", $0); print $0}'`
-    pwd_prompt=`_create_item litem_right 003 012 255 $path_prompt"  "`
+    pwd_prompt=`_create_item litem_right 003 012 255 $path_prompt`
 
     #pwd_prompt=`_create_item litem_right 003 012 255 " "%~`
     echo $machine_prompt$name_prompt$pwd_prompt
