@@ -98,8 +98,8 @@ function _get_machine_icon() {
 autoload -Uz add-zsh-hook initialize_prompt get_machine_icon
 function _initialize_prompt() {
     MACHINE_ICON=`_get_machine_icon`
-    machine_prompt=`_create_item litem_left 016 008 255 $MACHINE_ICON`
-    name_prompt=`_create_item litem 008 003 255 $USER`
+    machine_prompt=`_create_item litem_left 000 001 000 $MACHINE_ICON`
+    name_prompt=`_create_item litem 000 002 000 $USER`
 }
 _initialize_prompt
 
@@ -111,7 +111,7 @@ function _lprompt() {
     #fi
 
     path_prompt=`echo "$PWD" | awk -v home_dir=$HOME '{sub(home_dir, " ", $0); print $0}'`
-    pwd_prompt=`_create_item litem_right 003 012 255 $path_prompt`
+    pwd_prompt=`_create_item litem_right 000 004 000 $path_prompt`
 
     #pwd_prompt=`_create_item litem_right 003 012 255 " "%~`
     echo $machine_prompt$name_prompt$pwd_prompt
