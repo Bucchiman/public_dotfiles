@@ -114,49 +114,53 @@ function _lprompt() {
     pwd_prompt=`_create_item litem_right 000 004 000 $path_prompt`
 
     #pwd_prompt=`_create_item litem_right 003 012 255 " "%~`
-    echo $machine_prompt$name_prompt$pwd_prompt
+    echo $name_prompt$pwd_prompt
 }
 
 
 function _rprompt() {
-    git_prompt=""
+    MACHINE_ICON=`_get_machine_icon`
+    machine_prompt=`_create_item ritem 000 001 000 $MACHINE_ICON`
+    echo $machine_prompt
 
-    current=$PWD
-    git_check=1
+    #git_prompt=""
 
-    while [[ $PWD != '/' ]] do
-        if [[ -n `ls -a | grep "\.git$"` ]]; then
-            git_check=0
-            break
-        else
-            cd ../
-        fi
-    done
-    cd $current
+    #current=$PWD
+    #git_check=1
 
-    if [[ `echo $vcs_info_msg_0_ | grep -c -e "master" -e "main"` > 0 ]]; then
-        branch=" "
-    else
-        branch=" "
-    fi
+    #while [[ $PWD != '/' ]] do
+    #    if [[ -n `ls -a | grep "\.git$"` ]]; then
+    #        git_check=0
+    #        break
+    #    else
+    #        cd ../
+    #    fi
+    #done
+    #cd $current
 
-    if [[ $git_check -eq 0 ]] then
-        st=`git status 2> /dev/null`
-        if [[ -n `echo "$st" | grep "^nothing to"` ]] then
-            git_prompt="`_create_item ritem 014 016 255 $branch" "`"
-            git_prompt=" %1(v|$git_prompt|)"
-        elif [[ -n `echo "$st" | grep "^nothing added"` ]] then
-            git_prompt="`_create_item ritem 003 016 255 $branch" "`"
-            git_prompt=" %1(v|$git_prompt|)"
-        else [[ -n `echo "$st" | grep "^# Untracked"` ]]
-            git_prompt="`_create_item ritem 001 016 255 $branch" "`"
-            git_prompt=" %1(v|$git_prompt|)"
-        fi
-    else
-        git_prompt=""
-    fi
-    #git_prompt='%F{red}$(__git_ps1 "%s")%f'
-    echo $git_prompt
+    #if [[ `echo $vcs_info_msg_0_ | grep -c -e "master" -e "main"` > 0 ]]; then
+    #    branch=" "
+    #else
+    #    branch=" "
+    #fi
+
+    #if [[ $git_check -eq 0 ]] then
+    #    st=`git status 2> /dev/null`
+    #    if [[ -n `echo "$st" | grep "^nothing to"` ]] then
+    #        git_prompt="`_create_item ritem 014 016 255 $branch" "`"
+    #        git_prompt=" %1(v|$git_prompt|)"
+    #    elif [[ -n `echo "$st" | grep "^nothing added"` ]] then
+    #        git_prompt="`_create_item ritem 003 016 255 $branch" "`"
+    #        git_prompt=" %1(v|$git_prompt|)"
+    #    else [[ -n `echo "$st" | grep "^# Untracked"` ]]
+    #        git_prompt="`_create_item ritem 001 016 255 $branch" "`"
+    #        git_prompt=" %1(v|$git_prompt|)"
+    #    fi
+    #else
+    #    git_prompt=""
+    #fi
+    ##git_prompt='%F{red}$(__git_ps1 "%s")%f'
+    #echo $git_prompt
 }
 
 
@@ -165,7 +169,7 @@ precmd () {
     psvar=()
     #[[ -n "${vcs_info_msg_0_}" ]] && psvar[1]="${vcs_info_msg_0_}"
     PS1=`_lprompt`" "
-    #RPS1=`_rprompt`
+    RPS1=`_rprompt`
 }
 
 
