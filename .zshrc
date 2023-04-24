@@ -67,13 +67,13 @@ setopt prompt_subst   # プロンプトの文字列を変えられる
 
 function _create_item() {
     if [[ $1 == "litem" ]] then
-        echo "%F{$2}%K{$3}%k%f%K{$3}%F{$4}$5%f%k"
+        echo "%F{$2}%K{$3}%k%f%K{$3}%F{$4} $5 %f%k"
     elif [[ $1 == "litem_left" ]] then
-        echo "%F{$2}%K{$3}%k%f%K{$3}%F{$4}$5%f%k"
+        echo "%F{$2}%K{$3}%k%f%K{$3}%F{$4} $5 %f%k"
     elif [[ $1 == "litem_right" ]] then
-        echo "%F{$2}%K{$3}%k%f%K{$3}%F{$4}$5%f%k%F{$3}%f"
+        echo "%F{$2}%K{$3}%k%f%K{$3}%F{$4} $5 %f%k"
     elif [[ $1 == "ritem" ]] then
-        echo "%F{$2}%K{$3}%f%k%K{$2}%F{$4}$5%1v%f%k%F{$2}%K{$3}%f%k"
+        echo "%F{$2}%K{$3}%k%f%K{$3}%F{$4} $5 %f%k"
     fi
 }
 
@@ -120,7 +120,7 @@ function _lprompt() {
 
 function _rprompt() {
     MACHINE_ICON=`_get_machine_icon`
-    machine_prompt=`_create_item ritem 000 001 000 $MACHINE_ICON`
+    machine_prompt=`_create_item ritem 000 006 000 $MACHINE_ICON`
     echo $machine_prompt
 
     #git_prompt=""
