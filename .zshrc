@@ -99,7 +99,7 @@ autoload -Uz add-zsh-hook initialize_prompt get_machine_icon
 function _initialize_prompt() {
     MACHINE_ICON=`_get_machine_icon`
     machine_prompt=`_create_item litem_left 000 001 000 $MACHINE_ICON`
-    name_prompt=`_create_item litem 000 002 000 $USER`
+    name_prompt=`_create_item litem 000 002 000 $LOGNAME`
 }
 _initialize_prompt
 
