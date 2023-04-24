@@ -11,6 +11,7 @@ fi
 function colorlist() {
     for color in {000..015}; do
         print -nP "%F{$color}$color %f"
+        print -nP "%K{$color}$color %k"
     done
     printf "\n"
     for color in {016..255}; do
