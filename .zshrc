@@ -120,7 +120,7 @@ function _lprompt() {
 
 function _rprompt() {
     MACHINE_ICON=`_get_machine_icon`
-    machine_prompt=`_create_item ritem 000 006 000 $MACHINE_ICON`
+    machine_prompt=`_create_item ritem 000 001 000 $MACHINE_ICON`
     echo $machine_prompt
 
     #git_prompt=""
