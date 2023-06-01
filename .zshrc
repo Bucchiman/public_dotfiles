@@ -290,4 +290,14 @@ export EDITOR="$VISUAL"
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
 [ -f $HOME/.docker/init-zsh ] && source $HOME/.docker/init-zsh.sh || true # Added by Docker Desktop
 
+function show_online_snippets() {
+    #local snippets=$(cat $HOME/.config/snippets/oneline | fzf | cut -d':' -f2-)
+    local snippets=$(cd $HOME/.config/onelines; /usr/bin/find . -type f | fzf --height 100% | cut -d':' -f2-)
+    LBUFFER="${LBUFFER}${snippets//\\//}"
+    zle reset-prompt
+}
+zle -N show_online_snippets
+bindkey '^s^o' show_online_snippets
+
+
 return
